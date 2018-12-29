@@ -1,0 +1,11 @@
+---
+title: "PEC3"
+author: "Fernando Moral Algaba"
+date: "29 de diciembre de 2018"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
