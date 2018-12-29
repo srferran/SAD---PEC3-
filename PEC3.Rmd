@@ -9,3 +9,22 @@ output: pdf_document
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
+## Sección 1 (8 puntos) 
+
+1.   (1 punto) Buscad un conjunto de datos relacionados con la Bioestadística o Bioinformática. Para ello, podéis utilizar recursos conocidos de la PEC1, por ejemplo, como es el caso de http://www.bioinformatics.org/sms2/index.html o de http://biostat.mc.vanderbilt.edu/wiki/Main/DataSets. También podéis utilizar otros recursos propios que conozcáis o que sean de vuestro interés, y siempre teniendo en cuenta que sean datos públicos que podéis utilizar. Tenéis que explicar la procedencia de los datos así como incluir las referencias que correspon dan y justificar porqué habéis elegido estos datos.
+
+```{r 1_1 }
+
+# Descomentar para usar uno u otro dataset
+
+# Diabetes data
+
+#mydata <- read.csv("http://biostat.mc.vanderbilt.edu/wiki/pub/Main/DataSets/diabetes.csv",header=T, sep=",")
+
+# Duchenne muscular dystrophy dataset
+mydata <- read.csv("http://biostat.mc.vanderbilt.edu/wiki/pub/Main/DataSets/dmd.csv", header= T, sep=",")
+
+t(head(mydata, n=4))
+names(mydata)
+```
+
