@@ -15,6 +15,13 @@ knitr::opts_chunk$set(echo = TRUE)
 
 ```{r 1_1}
 
+
+
+
+```
+2.   (1 punto) Utilizando R, mostrad y explicad qué tipo de fichero habéis importado y las variables que forman parte de él (tipo, clasificación,...), así como todo aquello que creáis relevante. Incluir capturas de pantalla y las instrucciones en R que habéis utilizado para importar y mostrar los datos.
+
+```{r 1_2}
 # Descomentar para usar uno u otro dataset
 
 # Diabetes data
@@ -24,12 +31,9 @@ knitr::opts_chunk$set(echo = TRUE)
 # Duchenne muscular dystrophy dataset
 mydata <- read.csv("http://biostat.mc.vanderbilt.edu/wiki/pub/Main/DataSets/dmd.csv", header= T, sep=",")
 
-t(head(mydata, n=4))
+head(mydata, n=5)
 names(mydata)
-```
-2.   (1 punto) Utilizando R, mostrad y explicad qué tipo de fichero habéis importado y las variables que forman parte de él (tipo, clasificación,...), así como todo aquello que creáis relevante. Incluir capturas de pantalla y las instrucciones en R que habéis utilizado para importar y mostrar los datos.
-
-```{r 1_2}
+str(mydata)
 
 ```
 
@@ -37,6 +41,50 @@ names(mydata)
 en el LAB3.
 
 ```{r 1_3}
+# Total pacientes 
+
+sprintf("total pacientes: %d", length(unique(mydata$hospid)))
+
+# total observaciones
+
+sprintf("total observaciones: %d", length(mydata$obsno))
+
+# Frecuencia edades
+
+table(ordered(mydata$age), dnn = "age frequency")
+
+
+# Valor medio Hemopexina
+
+sprintf("media Hemopexina: %f", mean(mydata$h))
+
+
+# id portadores con Hemopexin inferior a la media de Hemopexin
+
+id_port <- function(df){
+  
+  m <- mean(mydata$h)
+  port_hp_inf_media <- df[df$h < m,]
+  return(port_hp_inf_media$hospid)
+  }
+id <- id_port(mydata)
+id
+
+# número pacientes con ck, pk y h superiores a la media 
+
+age_high_val <- function(df){
+  
+  # medias
+  m1 <- mean(mydata$h)
+  m2 <- mean(mydata$ck)
+  m3 <- mean(mydata$pk, na.rm=TRUE)
+  
+  sup_medias <- df[(df$h > m1)&(df$ck > m2)&(df$pk>m3),1]
+  
+  return(length(sup_medias))
+  }
+l <- age_high_val(mydata)
+sprintf("Pacientes con h, ck pk superiores a la media: %d", l)
 
 ```
 
