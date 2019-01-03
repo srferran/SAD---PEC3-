@@ -1,6 +1,6 @@
 ---
 title: "PEC3"
-author: "Fernando Moral Algaba, Angel Hugo Montes Hernández"
+author: "Angel Hugo Montes Hernández, Fernando Moral Algaba "
 date: "30 de diciembre de 2018"
 output: pdf_document
 ---
