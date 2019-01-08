@@ -9,30 +9,54 @@ output: pdf_document
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
+
 ## Sección 1 (8 puntos) 
 
 1.   (1 punto) Buscad un conjunto de datos relacionados con la Bioestadística o Bioinformática. Para ello, podéis utilizar recursos conocidos de la PEC1, por ejemplo, como es el caso de http://www.bioinformatics.org/sms2/index.html o de http://biostat.mc.vanderbilt.edu/wiki/Main/DataSets. También podéis utilizar otros recursos propios que conozcáis o que sean de vuestro interés, y siempre teniendo en cuenta que sean datos públicos que podéis utilizar. Tenéis que explicar la procedencia de los datos así como incluir las referencias que correspon dan y justificar porqué habéis elegido estos datos.
 
-```{r 1_1}
+
+# Duchenne Muscular Dystrophy Dataset
+
+This dataset is from M. Percy, listed in Table 38 of DF Andrews and AM Herzberg: <u>Data</u>, New York: Springer-Verlag, 1985 and also available on [StatLib](http://lib.stat.cmu.edu/datasets/). The 209 observations correspond to blood samples on 192 patients (17 patients have two samples in the dataset) collected in a project to develop a screening program for female relatives of boys with DMD. The program's goal was to inform a woman of her chances of being a carrier based on serum markers as well as her family pedigree. Another question of interest is whether age and season should be taken into account. Enzyme levels were measured in known carriers (75 samples) and in a group of non-carriers (134 samples). Note that the original observation numbers (within subject) on this dataset do not agree with replicates of hospital IDs, so they have been recomputed here. Another anomaly of the dataset is that 16 out of 17 subjects having two blood samples drawn had differing carrier status for the two observations.
+
+The first two serum markers, creatine kinase and hemopexin (<tt>ck,h</tt>), are inexpensive to obtain, while the last two, pyruvate kinase and lactate dehydroginase (<tt>pk,ld</tt>), are more expensive. It is of interest to measure how much <tt>pk</tt> and <tt>ld</tt> add toward predicting the carrier status. The importance of age and sample date is also of interest. Percy noted that the water supply for the lab changed during the study.
+
+* * *
+
+<address>[Frank E Harrell Jr](mailto:fharrell@virginia.edu)</address>
+
+Last modified: Fri Dec 27 16:55:37 EST 2002
 
 
 
-
+```{r 1_1 ,warning=FALSE, echo= FALSE}
+library(XML)
+library(knitr)
+url2 = "http://biostat.mc.vanderbilt.edu/wiki/pub/Main/DataSets/Cdmd.html"
+tab_contents <- scan(url2, what="", sep="\n")
+plain_table <- htmlParse(tab_contents)
+formatted_table <- readHTMLTable(plain_table)
+kable(formatted_table, caption = "Resumen Variables (desde URL)")
 ```
+
+
 2.   (1 punto) Utilizando R, mostrad y explicad qué tipo de fichero habéis importado y las variables que forman parte de él (tipo, clasificación,...), así como todo aquello que creáis relevante. Incluir capturas de pantalla y las instrucciones en R que habéis utilizado para importar y mostrar los datos.
 
-```{r 1_2}
-# Descomentar para usar uno u otro dataset
-
-# Diabetes data
-
-#mydata <- read.csv("http://biostat.mc.vanderbilt.edu/wiki/pub/Main/DataSets/diabetes.csv",header=T, sep=",")
+```{r 1_2, echo = FALSE}
 
 # Duchenne muscular dystrophy dataset
-mydata <- read.csv("http://biostat.mc.vanderbilt.edu/wiki/pub/Main/DataSets/dmd.csv", header= T, sep=",")
+mydata <- read.table("http://biostat.mc.vanderbilt.edu/wiki/pub/Main/DataSets/dmd.csv",
+                   header= T, sep=",")
+cat("head(mydata)")
+head(mydata)
 
-head(mydata, n=5)
-names(mydata)
+cat("tail(mydata)")
+tail(mydata)
+
+cat("colnames(mydata)")
+colnames(mydata)
+
+cat("str(mydata)")
 str(mydata)
 
 ```
@@ -40,51 +64,71 @@ str(mydata)
 3.   (2 puntos) Realizad un mínimo de seis preguntas objetivo que den una idea de la información contenida en el conjunto de datos escogido. Para ello, podéis basaros en el tipo de consultas realizadas a la Sección 2 de la PEC1 y también utilizando, en alguno de los casos, la definición de funciones tal como se trabaja
 en el LAB3.
 
-```{r 1_3}
+
+3. 1. ¿Cual es el numero total de pacientes del estudio?
+```{r 1_3_1, echo = FALSE}
 # Total pacientes 
-
 sprintf("total pacientes: %d", length(unique(mydata$hospid)))
+```
 
+3. 2. ¿Cuantas observaciones se han realizado?
+```{r 1_3_2, echo = FALSE}
 # total observaciones
 
 sprintf("total observaciones: %d", length(mydata$obsno))
-
+```
+3. 3. Haz una tabla que indique cuantos pacientes hay de cada edad
+```{r 1_3_3, echo = FALSE}
 # Frecuencia edades
 
-table(ordered(mydata$age), dnn = "age frequency")
+t <-table(ordered(mydata$age), dnn = "Frecuencia edad")
+# kable(t, caption = "Resumen Frecuencia edades)")
+t
+```
+3. 4. Indica el valor medio de la Hemopexina y la desviación para el conjunto de observaciones
 
-
+```{r 1_3_4, echo = FALSE}
 # Valor medio Hemopexina
+sprintf("media Hemopexina: %.2f", mean(mydata$h))
+sprintf("sd: %.2f", sd(mydata$h))
+```
 
-sprintf("media Hemopexina: %f", mean(mydata$h))
+3. 5. Muestra la ID de los pacientes portadores que tengan un valor de Creatine Kinase inferior al valor medio
 
-
-# id portadores con Hemopexin inferior a la media de Hemopexin
+```{r 1_3_5, echo = FALSE}
+# id portadores con ck inferior a la media de ck
 
 id_port <- function(df){
   
-  m <- mean(mydata$h)
-  port_hp_inf_media <- df[df$h < m,]
+  m <- mean(mydata$ck)
+  port_hp_inf_media <- df[df$ck < m,]
   return(port_hp_inf_media$hospid)
   }
 id <- id_port(mydata)
+cat("Portadores con ck inferior a la media")
 id
+```
 
+3. 6. Indica el número de pacientes cuyo valor de Creatine Kinase, Hemopexin y Pyruvate Kinase sean superiores a la media.Indica si son o no portadores.
+```{r 1_3_6, echo = FALSE}
 # número pacientes con ck, pk y h superiores a la media 
 
-age_high_val <- function(df){
+high_val <- function(df){
   
   # medias
   m1 <- mean(mydata$h)
   m2 <- mean(mydata$ck)
   m3 <- mean(mydata$pk, na.rm=TRUE)
   
-  sup_medias <- df[(df$h > m1)&(df$ck > m2)&(df$pk>m3),1]
-  
-  return(length(sup_medias))
+  sup_medias <- df[(df$h > m1)&(df$ck > m2)&(df$pk > m3),1]
+  df_out <- df$carrier[(df$h > m1)&(df$ck > m2)&(df$pk > m3)]
+  return(df_out)
   }
-l <- age_high_val(mydata)
-sprintf("Pacientes con h, ck pk superiores a la media: %d", l)
+res <- high_val(mydata)
+
+
+sprintf("Pacientes con h, ck y pk superiores a la media: %d", length(res) )
+sprintf("Pacientes portadores con h, ck y pk superiores a la media: %d", sum(res, na.rm = TRUE) )
 
 ```
 
@@ -94,7 +138,33 @@ como se vio en la Sección 3 de la PEC1, un resumen paramétrico de los datos y
 diversas representaciones gráficas de los mismos basadas en determinados criterios. Dejamos a vuestra elección el tipo de gráficos y los criterios utilizados.
 
 ```{r 1_4}
+summary(mydata)
+par(mfrow=c(2,2))
+plot(mydata$ck, xlab ="", ylab = "Creatine kinase", main = "ck" )
+plot(mydata$h, xlab = "", ylab = "Hemopexin", main = "h")
+plot(mydata$pk, xlab = "", ylab = "Pyruvate Kinase", main= "pk")
+plot(mydata$ld, xlab = "", ylab = "Lactate dehydrogenase", main = "L")
 
+par(mfrow=c(1,1))
+counts_ck <- table(mydata$carrier, mydata$ck)
+barplot(counts_ck, main="Creatine kinase",
+  xlab="ck value",ylab="Nº Pacientes", col=c("darkblue","red"),
+  legend = c("No Portador", "Portador") )
+
+counts_h <- table(mydata$carrier, mydata$h)
+barplot(counts_h, main="Hemopexin",
+  xlab="h value",ylab="Nº Pacientes", col=c("darkblue","red"))
+legend("topleft",inset=0.05, legend = c("No Portador", "Portador"), fill =  c("darkblue","red"), col=c("darkblue","red"))
+
+counts_pk <- table(mydata$carrier, mydata$pk)
+barplot(counts_pk, main="Pyruvate kinase",
+  xlab="pk value",ylab="Nº Pacientes", col=c("darkblue","red"),
+  legend = c("No Portador", "Portador"))
+
+counts_l <- table(mydata$carrier, mydata$l)
+barplot(counts_l, main="Lactate dehydrogenase",
+  xlab="L value",ylab="Nº Pacientes", col=c("darkblue","red"),
+  legend = c("No Portador", "Portador"))
 
 ```
 
