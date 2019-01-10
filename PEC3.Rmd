@@ -166,12 +166,76 @@ barplot(counts_l, main="Lactate dehydrogenase",
   xlab="L value",ylab="Nº Pacientes", col=c("darkblue","red"),
   legend = c("No Portador", "Portador"))
 
+# Según los gráficos apreciamos que niveles altos de los biomarcadores Creatine kinase,
+# Pyruvate kinase y Lactate dehydrogenase, son más claramente indicativos que los niveles
+# de kemopexin para determinar si se es portador.
 ```
 
 5.   (1 punto) Realizad, basándoos en los conceptos trabajados en el LAB4 y PEC2, un mínimo de tres cuestiones que respondan a una cuestión de probabilidad y un mínimo de una cuestión que corresponda a un breve modelo de simulación.
 
-```{r 1_5}
+5. 1. Como hemos visto en el apartado 3.1 el total de pacientes es de 192. Calcular el porcentaje de portadores. Sabiendo dicho porcentaje determinar que probabilidad existe de que al tomar 10 pacientes al azar más de 6 sean portadores.
+```{r 1_5_1}
+# Pacientes
+pacientes <- length(unique(mydata$hospid))
+sprintf("total pacientes: %d", pacientes)
 
+# portadores
+portadores <- length(unique(mydata$hospid[mydata$carrier==0]))
+sprintf("Portadores: %d", portadores )
+
+# % portadores
+porcentaje <- (portadores/pacientes)*100
+sprintf("Porcentaje: %.2f", porcentaje )
+
+# Probabilidad más de 6 portadores
+probabilidad <- 1 - pbinom(6, 10, porcentaje*0.01, lower.tail=TRUE, log.p= FALSE)
+sprintf("Probabilidad: %.2f", probabilidad)
+
+```
+5. 2. Supongamos que el número de pacientes diagnosticados erroneamente de DMD siguen una distribución de poisson con una media de 2.4 pacientes por cada 1000 casos.
+¿ Cual es la probabilidad de que se erre el diagnostico 2 veces entre mil pacientes?
+
+```{r 1_5_2}
+# E(x) = 2.4 = lambda
+
+probabilidad2 <- dpois(2,2.4)
+sprintf("Probabilidad: %.2f", probabilidad2)
+```
+
+
+5. 3. Sabiendo que el 64 % de las muestras corresponde a portadores y el 36% a no portadores y que entre las muestras de portadores el 35 % corresponde a mayores de 25 años mientras que en las de no portadores son el 47 % los mayores de 25 años, ¿ que probabilidad hay de que tomemos una muestra al azar perteneciente a una persona mayor de 25 años y esta sea portadora?
+
+```{r 1_5_3}
+# p = portador
+# np = no portador
+# M = mayor de 25 años
+
+# Aplicando el teorema de bayes
+
+# P(p|M)= (P(p)*P(M|p)) / (P(p)*P(M|p) + P(np)*p(M|np))
+probabilidad3 = (0.64*0.35) / ((0.64*0.35)+ 0.36*0.47)
+sprintf("La probabilidad es de: %.2f", probabilidad3)
+```
+5. 4. Para el biomarcador "Lactate dehydrogenase" La media y desviación entre las muestras de portadores es m_port = 256.2 y de sd_port = 81.1 respectivamente, siendo de m_no_port = 164.6 y sd_no_port = 41.4 para los no portadores. Supongamos que ambas distribuciones corresponden a distribuciones normales con sus respectivas medias y desviaciones. Genera 500 valores de cada distribución, unelos en un solo conjunto y compara el histograma del conjunto así generado con el histograma de los valores experimentales.Compara tambien la media y desviacion con las del estudio experimental.
+
+```{r 1_5_4}
+set.seed(6509)
+port<-rnorm(500, 256.2, 81.1)
+no_port<-rnorm(500, 164.6, 41.4)
+simulado <- c(port,no_port)
+
+sprintf("media simulacion: %f",mean(simulado))
+sprintf("desviacion simulacion: %f",sd(simulado))
+
+m_estudio <- mean(mydata$ld, na.rm=TRUE)
+sd_estudio <- sd(mydata$ld, na.rm=TRUE)
+
+sprintf("media experimental: %.2f",m_estudio)
+sprintf("desviacion experimental: %.2f", sd_estudio)
+
+par(mfrow=c(1,2))
+hist(mydata$ld, xlim = c(0,600), freq=FALSE, breaks= 20, main = "Experimental")
+hist(simulado, xlim = c(0,600), freq = FALSE,breaks= 20, main = "simulado")
 
 ```
 
