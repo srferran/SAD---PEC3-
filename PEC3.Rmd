@@ -235,7 +235,7 @@ sprintf("desviacion experimental: %.2f", sd_estudio)
 
 par(mfrow=c(1,2))
 hist(mydata$ld, xlim = c(0,600), freq=FALSE, breaks= 20, main = "Experimental")
-hist(simulado, xlim = c(0,600), freq = FALSE,breaks= 20, main = "simulado")
+hist(simulado, xlim = c(0,600), freq = FALSE,breaks= 20, main = "Simulado")
 
 ```
 
@@ -400,58 +400,64 @@ A lo largo del curso se ha trabajado con datos cuyo origen era diverso pero, bá
 
 - Seleccionar una base de datos de libre acceso y importad, desde Rstudio, estos datos. Mostrad el código utilizado y el resultado obtenido por pantalla.
 
-```{r 2_1}
-#Importamos la base de datos de UCLA Stress Echocardiography Data obtenida a partir de UCLA Statistics y que se encuentra en el Department of Biostatistics de Vanderbilt University
+### Respuesta:
 
-mydata2 <- read.csv("http://biostat.mc.vanderbilt.edu/wiki/pub/Main/DataSets/stressEcho.csv", header= T, sep=",")
+Importaremos una base de datos hecha en SQLite que corresponde a la calidad de las aguas en la unión europea
+
+*Waterbase is the generic name given to the EEA's databases on the status and quality of Europe's rivers, lakes, groundwater bodies and transitional, coastal and marine waters, on the quantity of Europe's water resources, and on the emissions to surface waters from point and diffuse sources of pollution.*
+
+
+```{r 2_1}
+
 
 #Visualizamos las primeras muestras de la base de datos
-head(mydata2)
-colnames(mydata2)
+# head(mydata2)
+# colnames(mydata2)
 ```
 
 - Realizad un par de consultas, desde Rstudio, a partir de estos datos y mostrad el código utilizado y resultado obtenido por pantalla.
 
 ```{r 2_2}
 #Resumen de las variables de la base de datos
-summary(mydata2)
-str(mydata2)
+# summary(mydata2)
+# str(mydata2)
 ```
 
 ```{r 2_2b}
 
 #Como tenemos muchas variables en el estudio vamos a crear una nueva variable que llamamos stress con las variables que nos resulten más interesantes
-stress <- subset(mydata2, select = c(age, gender, newMI, newPTCA, newCABG, death))
-colnames(stress) <- c("Age", "Gender", "New.MI", "New.PTCA", "New.CABG", "Death")
-summary(stress)
+# stress <- subset(mydata2, select = c(age, gender, newMI, newPTCA, newCABG, death))
+# colnames(stress) <- c("Age", "Gender", "New.MI", "New.PTCA", "New.CABG", "Death")
+# summary(stress)
 
 #Gráfica para ver la distribución de los pacientes de acuerdo con la variable Age
-library(ggplot2)
-ggplot(stress, aes(x = Age)) + geom_dotplot(binwidth = 1) + labs(title = "Edad de los pacientes")
+# library(ggplot2)
+# ggplot(stress, aes(x = Age)) + geom_dotplot(binwidth = 1) + labs(title = "Edad de los pacientes")
 
 #Summary de Age
-summary(stress$Age)
+# summary(stress$Age)
 
 # 95% Confidence Intervals
-se <- sd(stress$Age)/sqrt(length(stress$Age))
-lower <- mean(stress$Age) - 1.96 * se
-upper <- mean(stress$Age) + 1.96 * se
-c(lower,upper)
+# se <- sd(stress$Age)/sqrt(length(stress$Age))
+# lower <- mean(stress$Age) - 1.96 * se
+# upper <- mean(stress$Age) + 1.96 * se
+# c(lower,upper)
 
 #Histograma de la variable Age
-hist(stress$Age, probability = TRUE, main = "Histograma de Age", xlab = "Age")
-x <- 10:110
-y <- dnorm(x = x, mean = mean(stress$Age), sd = sd(stress$Age))
-lines(x = x, y = y, col = "red")
+# hist(stress$Age, probability = TRUE, main = "Histograma de Age", xlab = "Age")
+# x <- 10:110
+# y <- dnorm(x = x, mean = mean(stress$Age), sd = sd(stress$Age))
+# lines(x = x, y = y, col = "red")
 
-#Regresión lineal entre las variables Age y Death para ver si hay más personas que fallecen cuando la edad es mayor
-reg_lin <- lm(Death~Age, stress)
-summary(reg_lin)
+# #Regresión lineal entre las variables Age y Death para ver si hay más personas que fallecen cuando la edad es mayor
+# reg_lin <- lm(Death~Age, stress)
+# summary(reg_lin)
 
 #p-valor>0.05. Se acepta la hipótesis nula, no hay relación lineal entre ambas variables
 
 
 #Representamos la nube de puntos y la recta de regresión lineal
-ggplot(stress, aes(Age,Death))+geom_point(aes(color=factor(Gender)))+stat_smooth(method="lm", col="blue")+labs(title="Regresión lineal Age-Death")
+# ggplot(stress, aes(Age,Death))+geom_point(aes(color=factor(Gender)))+stat_smooth(method="lm", col="blue")+labs(title="Regresión lineal Age-Death")
 ```
+
 
