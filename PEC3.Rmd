@@ -244,12 +244,14 @@ hist(simulado, xlim = c(0,600), freq = FALSE,breaks= 20, main = "Simulado")
 ```{r 1_6}
 # Pregunta 1: ¿Hay relación entre la edad de los pacientes y los niveles de ck?
 
-# Para dilucidad esta cuestión realizamos un análisis de regresión lineal de la variable independiente age respecto a la variable dependiente ck
+# Para dilucidad esta cuestión realizamos un análisis de regresión lineal de la
+# variable independiente age respecto a la variable dependiente ck
 
 reg_lin <- lm(ck~age, mydata)
 summary(reg_lin)
 
-# Obtenemos un p-valor<0.05. Es estadísticamente significativo. Hay relación lineal entre age y los niveles de ck
+# Obtenemos un p-valor<0.05. Es estadísticamente significativo. Hay relación 
+# lineal entre age y los niveles de ck
 
 # La recta de regresión es ck = 1.801 + 2.813*age
 # Por cada año que se suma esperamos que los niveles de ck aumenten en 2.813
@@ -298,7 +300,8 @@ plot(reg_lin)
 # Representamos la nube de puntos y la recta de regresión lineal
 
 library(ggplot2)
-ggplot(mydata, aes(age,ck))+geom_point(aes(color=factor(carrier)))+stat_smooth(method="lm", col="blue")+labs(title="Regresión lineal age-ck")
+ggplot(mydata, aes(age,ck))+geom_point(aes(color=factor(carrier)))+
+  stat_smooth(method="lm", col="blue")+labs(title="Regresión lineal age-ck")
 
 # Calculamos la correlación que puede existir entre las variables age y ck
 
@@ -311,12 +314,14 @@ cor(mydata$age, mydata$ck)
 ```{r}
 # Pregunta 2: ¿Hay relación entre la edad de los pacientes y los dias de hospitalización?
 
-# Para responder a esta pregunta realizamos un análisis de Regresión lineal de age frente a los días de hospitalización
+# Para responder a esta pregunta realizamos un análisis de Regresión lineal de age frente
+# a los días de hospitalización
 
 reg_lin2 <- lm(hospid~age, mydata)
 summary(reg_lin2)
 
-# El p-valor < 0.05. Existe significación. Hay relación entre la edad y los días de hospitalización
+# El p-valor < 0.05. Existe significación. Hay relación entre la edad y los días de
+# hospitalización
 
 
 # La recta de regresióm lineal es hospid = 853.144 + 6.270*age
@@ -353,7 +358,8 @@ rto.estimates(mydata$age, mydata$hospid)
 par(mfrow = c(2, 2))
 plot(reg_lin2)
 
-# Basándonos en estos gráficos anteriores podemos decir que el modelo parece aceptable desde el punto de vista de la normalidad
+# Basándonos en estos gráficos anteriores podemos decir que el modelo parece aceptable 
+# desde el punto de vista de la normalidad
 
 
 # Calculamos los intervalos de confianza al 95%
@@ -362,7 +368,8 @@ confint(reg_lin2, level = 0.95)
 
 # Representamos la nube de puntos y la recta de regresión lineal
 
-ggplot(mydata, aes(age,hospid))+geom_point(aes(color=factor(carrier)))+stat_smooth(method="lm", col="blue")+labs(title="Regresión lineal age-hospid")
+ggplot(mydata, aes(age,hospid))+geom_point(aes(color=factor(carrier)))+
+  stat_smooth(method="lm", col="blue")+labs(title="Regresión lineal age-hospid")
 
 # Determinamos la correlación entre la edad y los días de hospitalización
 
@@ -374,24 +381,53 @@ cor(mydata$age, mydata$hospid)
 7.   (1 punto) A partir de los datos de origen y el estudio realizado, haced una valoración final. Para ello, podéis basaros en las siguientes preguntas: "disponemos de conclusiones finales?", "sería necesario hacer un análisis más avanzado?", "faltan datos para obtener otro tipo de información como...?",....
 
 ```{r 1_7}
-#La distrofia muscular de Duchenne (DMD) es una miopatía progresiva que produce degeneración y debilidad muscular y que tiene un tipo de herencia ligado al cromosoma X recesiva. Es una enfermedad grave y relativamente frecuente que se asocia con un deterioro clínico progresivo e imparable.
+# La distrofia muscular de Duchenne (DMD) es una miopatía progresiva que produce 
+# degeneración y debilidad muscular y que tiene un tipo de herencia ligado al 
+# cromosoma X recesiva. Es una enfermedad grave y relativamente frecuente que se 
+# asocia con un deterioro clínico progresivo e imparable.
 
-#El gen DMD codifica la proteína distrofina que, en el músculo, une la matriz extracelular (laminina) al citoesqueleto de actina.
+# El gen DMD codifica la proteína distrofina que, en el músculo, une la matriz 
+# extracelular (laminina) al citoesqueleto de actina.
 
-#Existen una serie de biomarcadores clínicos usados en el diagnóstico de la DMD como son los niveles séricos de enzimas como ck y h. Incrementos patológicos combinados de ambos enzimas debido a la rabdomiolisis o destrucción de células musculares como consecuencia de la DMD son buenos parámetros para estudiar la gravedad y el grado de desarrollo de la DMD.
+# Existen una serie de biomarcadores clínicos usados en el diagnóstico de la DMD
+# como son los niveles séricos de enzimas como ck y h. Incrementos patológicos 
+# combinados de ambos enzimas debido a la rabdomiolisis o destrucción de células 
+# musculares como consecuencia de la DMD son buenos parámetros para estudiar la 
+# gravedad y el grado de desarrollo de la DMD.
 
 
-#En las fases preclínica y temprana de la enfermedad, la concentración sérica de creatincinasa (ck) es muy elevada (50-100 veces superior al límite alto de la normalidad) debido a que esta enzima es liberada a partir del músculo afectado en aquellos pacientes que sufren la distrofia.
+#En las fases preclínica y temprana de la enfermedad, la concentración sérica de 
+# creatincinasa (ck) es muy elevada (50-100 veces superior al límite alto de la 
+# normalidad) debido a que esta enzima es liberada a partir del músculo afectado 
+# en aquellos pacientes que sufren la distrofia.
 
-#La inmensa mayoría de las mujeres portadoras no presenta manifestaciones clínicas, aunque alrededor del 70% muestra concentraciones séricas de creatina quinasa ligeramente elevadas que van aumentando progresivamente con la edad. 
+# La inmensa mayoría de las mujeres portadoras no presenta manifestaciones clínicas,
+# aunque alrededor del 70% muestra concentraciones séricas de creatina quinasa 
+# ligeramente elevadas que van aumentando progresivamente con la edad. 
 
-#Los dos hechos anteriores encajan con el resultado obtenido en la regresión lineal que nos permitía determinar si existía una relación entre la edad y los niveles de ck, un hecho que, como hemos visto por los resultados obtenidos, así ocurre. Esto lo podemos ver en la nube de puntos de la gráfica de regresión lineal age-ck donde las mujeres portadoras (carrier=1) tienen valores más elevados del enzima.
+# Los dos hechos anteriores encajan con el resultado obtenido en la regresión lineal
+# que nos permitía determinar si existía una relación entre la edad y los niveles de
+# ck, un hecho que, como hemos visto por los resultados obtenidos, así ocurre. Esto 
+# lo podemos ver en la nube de puntos de la gráfica de regresión lineal age-ck donde
+# las mujeres portadoras (carrier=1) tienen valores más elevados del enzima.
 
-#Dado que, conforme se va envejeciendo, se va sufriendo un empeoramiento progresivo como consecuencia de la patología, y que podría requerir un mayor tratamiento hospitalario, parece razonable confirmar los resultados obtenidos en el segundo modelo de regresión lineal que considera que aumentan los días de hospitalización conforme se va aumentando la edad de los pacientes.
+# Dado que, conforme se va envejeciendo, se va sufriendo un empeoramiento progresivo 
+# como consecuencia de la patología, y que podría requerir un mayor tratamiento 
+# hospitalario, parece razonable confirmar los resultados obtenidos en el segundo 
+# modelo de regresión lineal que considera que aumentan los días de hospitalización
+# conforme se va aumentando la edad de los pacientes.
 
-#Para completar el estudio se necesitarian más variables y datos. Por ejemplo, sería interesante obtener datos acerca del tratamiento. El tratamiento con glucocorticoides puede retrasar la progresión de la enfermedad durante varios años, por lo que sería necesario disponer de esa información y ver si podría afectar de alguna manera a los niveles de ck o a los días de hospitalización.
+# Para completar el estudio se necesitarian más variables y datos. Por ejemplo, sería
+# interesante obtener datos acerca del tratamiento. El tratamiento con glucocorticoides
+# puede retrasar la progresión de la enfermedad durante varios años, por lo que sería
+# necesario disponer de esa información y ver si podría afectar de alguna manera a los
+# niveles de ck o a los días de hospitalización.
 
-#También serían interesantes estudios genéticos como el análisis de polimorfismos o mutuaciones presentes en la región promotora o en el gen de la distrofina y en genes que codifican para las diferentes enzimas como la ck. También el estudio de diferentes isoformas del gen en una serie de tejidos celulares podría ser una buena fuente de información adicional. 
+# También serían interesantes estudios genéticos como el análisis de polimorfismos o 
+# mutuaciones presentes en la región promotora o en el gen de la distrofina y en genes
+# que codifican para las diferentes enzimas como la ck. También el estudio de diferentes
+# isoformas del gen en una serie de tejidos celulares podría ser una buena fuente de 
+# información adicional. 
 ```
 
 ## Sección 2 (2 puntos)
@@ -406,58 +442,56 @@ Importaremos una base de datos hecha en SQLite que corresponde a la calidad de l
 
 *Waterbase is the generic name given to the EEA's databases on the status and quality of Europe's rivers, lakes, groundwater bodies and transitional, coastal and marine waters, on the quantity of Europe's water resources, and on the emissions to surface waters from point and diffuse sources of pollution.*
 
+Esta base de datos puede encontrarse en la página web de la **European Environment Agency** en la URL: https://www.eea.europa.eu/data-and-maps/data/waterbase-water-quality-1
 
+La base de datos no está disponible para conectar remotamente pero puede ser descargada en el siguiente enlace a fecha 12/01/2019 :
+http://ftp.eea.europa.eu/www/waterbase/WISE4/v2016_1/Waterbase_v2016_1_WISE4_sqlite.zip
+
+Una vez descompromida la base de datos ocupa aprox. 8 GB por lo que no se adjuntará el archivo a este ejercicio.
 ```{r 2_1}
+library(RSQLite)
+# Establecemos una conexión con la base de datos
+con <- dbConnect(SQLite(), "S:/Descargas/Waterbase_v2016_1_WISE4.sqlite")
 
+# Obtenemos un listado de las tablas que forman la base de datos
+dbListTables(con)
 
-#Visualizamos las primeras muestras de la base de datos
-# head(mydata2)
-# colnames(mydata2)
+# Importamos una tabla 
+mydf <- dbReadTable(con, "T_WISE4_BiologyEQRClassificationProcedure")
+
+# La tabla se importa como un data frame
+class(mydf)
+
+# Obtenemos de la base de datos el nombre de los campos que componen la tabla
+dbListFields(con, "T_WISE4_BiologyEQRClassificationProcedure")
+
+# Observese que se obtienen el mismo resultado si se utiliza la instrucción names()
+# de R sobre el data frame de la tabla importada
+names(mydf)
 ```
 
 - Realizad un par de consultas, desde Rstudio, a partir de estos datos y mostrad el código utilizado y resultado obtenido por pantalla.
 
 ```{r 2_2}
-#Resumen de las variables de la base de datos
-# summary(mydata2)
-# str(mydata2)
+# Podemos hacer una query SQL
+q <- dbSendQuery(con, "SELECT parameterBoundaryValueClasses23 FROM 
+                 T_WISE4_BiologyEQRClassificationProcedure WHERE CountryCode = 'ES'" )
+
+# Hacemos el fetch para obtener el resultado de la query
+res1<- dbFetch(q)
+
+# consultamos los últimos registros resultado de nuestra query
+tail(res1)
+
+# Limpiamos el fetch
+dbClearResult(q)
+
+# Desconectamos de la base de datos
+dbDisconnect(con)
+# Dado que hemos importado una tabla a R podemos trabajar directamente con ella sin
+# estar conectados a la base de datos. Realizaremos la misma consulta pero en formato
+# R sobre el data frame importado. Los resultados obtenidos son equivalentes.
+res1 <- mydf$parameterBoundaryValueClasses23[mydf$CountryCode=='ES']
+tail(res1)
 ```
-
-```{r 2_2b}
-
-#Como tenemos muchas variables en el estudio vamos a crear una nueva variable que llamamos stress con las variables que nos resulten más interesantes
-# stress <- subset(mydata2, select = c(age, gender, newMI, newPTCA, newCABG, death))
-# colnames(stress) <- c("Age", "Gender", "New.MI", "New.PTCA", "New.CABG", "Death")
-# summary(stress)
-
-#Gráfica para ver la distribución de los pacientes de acuerdo con la variable Age
-# library(ggplot2)
-# ggplot(stress, aes(x = Age)) + geom_dotplot(binwidth = 1) + labs(title = "Edad de los pacientes")
-
-#Summary de Age
-# summary(stress$Age)
-
-# 95% Confidence Intervals
-# se <- sd(stress$Age)/sqrt(length(stress$Age))
-# lower <- mean(stress$Age) - 1.96 * se
-# upper <- mean(stress$Age) + 1.96 * se
-# c(lower,upper)
-
-#Histograma de la variable Age
-# hist(stress$Age, probability = TRUE, main = "Histograma de Age", xlab = "Age")
-# x <- 10:110
-# y <- dnorm(x = x, mean = mean(stress$Age), sd = sd(stress$Age))
-# lines(x = x, y = y, col = "red")
-
-# #Regresión lineal entre las variables Age y Death para ver si hay más personas que fallecen cuando la edad es mayor
-# reg_lin <- lm(Death~Age, stress)
-# summary(reg_lin)
-
-#p-valor>0.05. Se acepta la hipótesis nula, no hay relación lineal entre ambas variables
-
-
-#Representamos la nube de puntos y la recta de regresión lineal
-# ggplot(stress, aes(Age,Death))+geom_point(aes(color=factor(Gender)))+stat_smooth(method="lm", col="blue")+labs(title="Regresión lineal Age-Death")
-```
-
 
